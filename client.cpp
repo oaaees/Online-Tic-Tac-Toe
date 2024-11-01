@@ -6,38 +6,37 @@ using namespace std;
 #define IP_ADDRESS "127.0.0.1"
 
 int main() {
-    WSADATA wsaData;     
-    int nResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+    WSADATA wsaData;
+    int startupResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
 
-    if (nResult < 0) {
-        cerr << "WSAStartup failed with error: " << nResult << endl;
+    if (startupResult != 0) {
+        cerr << "WSAStartup failed with error: " << startupResult << endl;
         exit(EXIT_FAILURE);
     }
 
-    SOCKET nClientSocket = socket(AF_INET, SOCK_STREAM, 0);
-    if (nClientSocket == INVALID_SOCKET || nClientSocket < 0) {
+    SOCKET socketHandle = socket(AF_INET, SOCK_STREAM, 0);
+    if (socketHandle == INVALID_SOCKET) {
         cerr << "Socket creation failed" << endl;
         WSACleanup();
-        exit(EXIT_FAILURE); 
+        exit(EXIT_FAILURE);
     }
 
-    struct sockaddr_in clientSockaddr;
-    clientSockaddr.sin_family = AF_INET;
-    clientSockaddr.sin_port = htons(PORT);
-    clientSockaddr.sin_addr.s_addr = inet_addr(IP_ADDRESS);
-    memset(clientSockaddr.sin_zero, 0, sizeof(clientSockaddr.sin_zero));
+    sockaddr_in serverAddress;
+    serverAddress.sin_family = AF_INET;
+    serverAddress.sin_port = htons(PORT);
+    serverAddress.sin_addr.s_addr = inet_addr(IP_ADDRESS);
+    memset(serverAddress.sin_zero, 0, sizeof(serverAddress.sin_zero));
 
-    nResult = connect(nClientSocket, (struct sockaddr*)&clientSockaddr, sizeof(clientSockaddr));
+    int connectResult = connect(socketHandle, (struct sockaddr*)&serverAddress, sizeof(serverAddress));
 
-    if (nResult < 0) {
+    if (connectResult != 0) {
         cerr << "Connection failed" << endl;
+        closesocket(socketHandle);
         WSACleanup();
         exit(EXIT_FAILURE);
-    } else {
-        cout << "Connected" << endl;
     }
 
-    closesocket(nClientSocket);
+    closesocket(socketHandle);
     WSACleanup();
     return 0;
 }

@@ -11,90 +11,85 @@ fd_set fr, fw, fe;
 int nMaxFd = 0;
 
 int main (){
-    int nRetVal = 0;
+    int result = 0;
 
     // Initialize the WSA variables
     WSADATA wsaData;
-    int nResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-    if (nResult < 0) {
-        cerr << "WSAStartup failed with error: " << nResult << endl;
+    result = WSAStartup(MAKEWORD(2, 2), &wsaData);
+    if (result < 0) {
+        cerr << "WSAStartup failed with error: " << result << endl;
         exit(EXIT_FAILURE);
     }
 
     // Initialize the socket
-    int nServerSocket = socket(AF_INET, SOCK_STREAM, 0);    
-    if (nServerSocket == INVALID_SOCKET || nServerSocket < 0) {
+    int serverSocket = socket(AF_INET, SOCK_STREAM, 0);    
+    if (serverSocket == INVALID_SOCKET) {
         cerr << "Socket creation failed" << endl;
         WSACleanup();
         exit(EXIT_FAILURE);
     }
 
     // Initialize the environment for sockaddr structure
-    struct sockaddr_in serverSockaddr;
+    sockaddr_in serverSockaddr;
     serverSockaddr.sin_family = AF_INET;
     serverSockaddr.sin_port = htons(PORT);
     serverSockaddr.sin_addr.s_addr = inet_addr(IP_ADDRESS);
     memset(serverSockaddr.sin_zero, 0, sizeof(serverSockaddr.sin_zero));
 
     // Set the socket to reuse
-    nRetVal = setsockopt(nServerSocket, SOL_SOCKET, SO_REUSEADDR, (char *)&serverSockaddr, sizeof(serverSockaddr));
-
-    if(nRetVal < 0) {
+    result = setsockopt(serverSocket, SOL_SOCKET, SO_REUSEADDR, (char *)&serverSockaddr, sizeof(serverSockaddr));
+    if (result < 0) {
         cerr << "Setsockopt failed" << endl;
         WSACleanup();
         exit(EXIT_FAILURE);
     }
 
     // Bind the socket to the local port
-    nRetVal = bind(nServerSocket, (struct sockaddr *)&serverSockaddr, sizeof(serverSockaddr));
-
-    if(nRetVal < 0) {
+    result = bind(serverSocket, (struct sockaddr *)&serverSockaddr, sizeof(serverSockaddr));
+    if (result < 0) {
         cerr << "Bind failed" << endl;
         WSACleanup();
         exit(EXIT_FAILURE);
     }
 
     // Listen the request from the client (queues the requests)
-    nRetVal = listen(nServerSocket, 5);
-
-    if(nRetVal < 0) {
+    result = listen(serverSocket, 5);
+    if (result < 0) {
         cerr << "Listen failed" << endl;
         WSACleanup();
         exit(EXIT_FAILURE);
     }
 
-    // Keep waiting for new requests and proceed as per the request
-
-    int nMaxFd = nServerSocket;
+    // Initialize the environment for select
+    fd_set readfds, writefds, exceptfds;
+    int maxFd = serverSocket;
     struct timeval tv;
     tv.tv_sec = 1;
     tv.tv_usec = 0;
-    fd_set readfds, writefds, exceptfds;
 
-    while(1) {
+    while (true) {
         FD_ZERO(&readfds);
         FD_ZERO(&writefds);
         FD_ZERO(&exceptfds);
-        FD_SET(nServerSocket, &readfds);
-        FD_SET(nServerSocket, &writefds);
-        FD_SET(nServerSocket, &exceptfds);
+        FD_SET(serverSocket, &readfds);
+        FD_SET(serverSocket, &writefds);
+        FD_SET(serverSocket, &exceptfds);
 
-        nRetVal = select(nMaxFd + 1, &readfds, &writefds, &exceptfds, &tv);
-
-        if(nRetVal < 0) {
+        result = select(maxFd + 1, &readfds, &writefds, &exceptfds, &tv);
+        if (result < 0) {
             cerr << "Select failed" << endl;
             WSACleanup();
             exit(EXIT_FAILURE);
-        } else if (nRetVal > 0) {
-            if(FD_ISSET(nServerSocket, &readfds)) {
+        } else if (result > 0) {
+            if (FD_ISSET(serverSocket, &readfds)) {
                 cout << "Read" << endl;
             }
 
-            if(FD_ISSET(nServerSocket, &writefds)) {
+            if (FD_ISSET(serverSocket, &writefds)) {
                 cout << "Write" << endl;
             }
 
-            if(FD_ISSET(nServerSocket, &exceptfds)) {
+            if (FD_ISSET(serverSocket, &exceptfds)) {
                 cout << "Except" << endl;
             }
             break;
@@ -102,8 +97,7 @@ int main (){
     }
 
     // Close the socket
-
-    closesocket(nServerSocket);
+    closesocket(serverSocket);
     WSACleanup();
 
     return 0;
