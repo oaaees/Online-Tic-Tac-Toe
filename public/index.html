@@ -4,11 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online Tic-Tac-Toe</title>
-    
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdn.socket.io/4.8.0/socket.io.min.js" integrity="sha384-OoIbkvzsFFQAG88r+IqMAjyOtYDPGO0cqK5HF5Uosdy/zUEGySeAzytENMDynREd" crossorigin="anonymous"></script>
 </head>
 <body>
-    <button id="hellobtn">Say Hello!</button>
+    <section id="enter-name">
+        <h1 class="game--title">Tic Tac Toe</h1>
+        <div class="enter-name--container">
+            <input type="text" name="name" placeholder="Enter your name" id="name">
+            <button id="submit-name">Enter</button>
+        </div>
+    </section>
+    <section id="waiting--container">
+        <h1 class="game--title">Tic Tac Toe</h1>
+        <img src="/img/loading.gif" alt="loading gif">
+        <p>Waiting for another player</p>
+    </section>
+    <section id="play--container">
+        <h1 class="game--title">Tic Tac Toe</h1>
+        <p class="players--id"><span class="p1--id"></span> vs <span class="p2--id"></span></p>
+        <div class="game--container">
+            <div data-cell-index="0" class="cell"></div>
+            <div data-cell-index="1" class="cell"></div>
+            <div data-cell-index="2" class="cell"></div>
+            <div data-cell-index="3" class="cell"></div>
+            <div data-cell-index="4" class="cell"></div>
+            <div data-cell-index="5" class="cell"></div>
+            <div data-cell-index="6" class="cell"></div>
+            <div data-cell-index="7" class="cell"></div>
+            <div data-cell-index="8" class="cell"></div>
+        </div>
+        <h3 class="game--status"></h3>
+        <button class="game--restart">Restart Game</button>
+    </section>
+
     <script src="client.js"></script>
+    <script src="game.js"></script>
 </body>
 </html>

@@ -12,22 +12,40 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 })
 
+
+class Game {
+    state;
+    p1_id;
+    p2_id;
+    currentPlayer;
+    gameActive = true;
+
+    constructor(p1_id, p2_id){
+       this.state = ["", "", "", "", "", "", "", "", ""];
+       this.p1_id = p1_id;
+       this.p2_id = p2_id;
+       this.currentPlayer = this.player1;
+       this.gameActive = true;
+    }
+}
+
+let players = [];
+
 //The 'connection' is a reserved event name in socket.io
 //For whenever a connection is established between the server and a client
 io.on('connection', (socket) => {
+    socket.on('newPlayer', (data) => {
+            console.log(`player with id ${socket.id} and username ${data} connected`);
+            players.push({ id: socket.id, username: data});
 
-	//Displaying a message on the terminal
-    console.log('a user connected');
-    //Sending a message to the client
-    socket.emit('serverToClient', "Hello, client!");
-    //Receiving a message from the client and putting it on the terminal
-    socket.on('clientToServer', data => {
-        console.log(data);
-    })
-    //When the client sends a message via the 'clientToClient' event
-    //The server forwards it to all the other clients that are connected
-    socket.on('clientToClient', data => {
-        socket.broadcast.emit('serverToClient', data);
-    })
-    
+            if (players.length == 2){
+                const game = new Game(players[0].username, players[1].username);
+                io.emit('startGame', game);
+            }
+    }); 
+
+    socket.on('disconnect', () => {
+        console.log(`player with id ${socket.id} disconnected`);
+        players = players.filter((player) => player.id !== socket.id);
+    });
 });

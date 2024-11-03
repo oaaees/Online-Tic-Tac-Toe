@@ -1,14 +1,26 @@
-//Establishing a connection with the server on port 5500y
+
+//Establishing a connection with the server
 const socket = io();
 
-//Callback function fires on the event called 'serverToClient'
-socket.on('serverToClient', (data) => {
-    alert(data);
-})
+document.getElementById("play--container").style.display = "none";
+document.getElementById("waiting--container").style.display = "none";
+document.getElementById("submit-name").addEventListener('click', () => {
+    let username = document.getElementById("name").value;
+    socket.emit('newPlayer', username);
 
-//Client sends a message at the moment it got connected with the server
-socket.emit('clientToServer', "Hello, server!");
+    document.getElementById("enter-name").style.display = "none";
+    document.getElementById("waiting--container").style.display = "flex";
+});
 
-document.getElementById('hellobtn').addEventListener('click', () => {
-    socket.emit('clientToClient', "Hello, other client!");
-})
+socket.on('startGame', (game) => {
+    document.getElementById("waiting--container").style.display = "none";
+    document.getElementById("play--container").style.display = "flex";
+
+    const p1 = document.querySelector('.p1--id');
+    const p2 = document.querySelector('.p2--id');
+    p1.innerHTML = game.p1_id;
+    p2.innerHTML = game.p2_id;
+});
+
+// //Client sends a message at the moment it got connected with the server
+// socket.emit('clientToServer', "Hello, server!");
