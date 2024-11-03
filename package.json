@@ -1,0 +1,23 @@
+{
+  "name": "online-tic-tac-toe",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oaaees/Online-Tic-Tac-Toe.git"
+  },
+  "author": "Johan Paredes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oaaees/Online-Tic-Tac-Toe/issues"
+  },
+  "homepage": "https://github.com/oaaees/Online-Tic-Tac-Toe#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.1",
+    "socket.io": "^4.8.1"
+  }
+}
