@@ -1,6 +1,6 @@
 
 //Establishing a connection with the server
-const socket = io();
+const socket = io('/');
 let game_id;
 let username;
 

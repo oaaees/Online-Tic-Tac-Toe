@@ -2,6 +2,18 @@
 
 A real-time, multiplayer Tic-Tac-Toe game implemented with [Node.js](https://nodejs.org/en) using [Express](https://expressjs.com/) and [Socket.io](https://socket.io/)
 
+## How to run
+
+Install Node.js and run the command from this project folder:
+
+`node install`
+
+After all the dependecies are installed, you can start the server with:
+
+`node server.js`
+
+Server runs on `http://localhost:3000` you can visit it in your web browser.
+
 ## How it works
 
 1. When a user connects to the server, they are given a unique id and they are asked for a username.
@@ -16,6 +28,18 @@ A real-time, multiplayer Tic-Tac-Toe game implemented with [Node.js](https://nod
 10. If all of the cells are filled and no player has won, the game is a draw and the game is over.
 11. When the game is over, the game is added to an array of archived games and the players are removed from the game.
 12. When a player disconnects, if they are in a game, the game is ended and the other player is notified.
+
+## Cómo Ejecutar
+
+Instala Node.js y ejecuta el siguiente comando:
+
+`node install`
+
+Luego de instalar todas las dependencias, ejecuta el comando para crear el servidor:
+
+`node server.js`
+
+El servidor se ejecutará en `http://localhost:3000` puedes visitar esta dirección en tu navegador web
 
 ## Cómo funciona
 
