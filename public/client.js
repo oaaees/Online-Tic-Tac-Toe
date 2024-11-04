@@ -6,15 +6,56 @@ let username;
 
 document.getElementById("play--container").style.display = "none";
 document.getElementById("waiting--container").style.display = "none";
-document.getElementById("submit-name").addEventListener('click', () => {
+document.getElementById("rooms--container").style.display = "none";
+
+document.getElementById("create-room--btn").addEventListener('click', () => {
     username = document.getElementById("name").value;
-    socket.emit('newPlayer', username);
+
+    if (username == "") {
+        alert("Please enter a username");
+        return;
+    }
+
+    socket.emit('newRoom', username);
 
     document.getElementById("enter-name").style.display = "none";
     document.getElementById("waiting--container").style.display = "flex";
 });
 
+document.getElementById("enter-room--btn").addEventListener('click', () => {
+    username = document.getElementById("name").value;
+
+    if (username == "") {
+        alert("Please enter a username");
+        return;    
+    }
+
+    socket.emit('enterRoom', username);
+});
+
+socket.on('roomCreated', (game_id) => {
+    document.getElementById("room-id").innerHTML = "Your room id is: " + game_id;
+})
+
+socket.on('showRooms', (rooms) => {
+    document.getElementById("enter-name").style.display = "none";
+    document.getElementById("rooms--container").style.display = "flex";
+
+    let roomList = document.getElementById("rooms--list");
+
+    for(let i = 0; i < rooms.length; i++) {
+        let room = document.createElement("button");
+        room.innerHTML = rooms[i].game_id;
+        roomList.appendChild(room);
+
+        room.addEventListener("click", () => {
+            socket.emit('joinRoom', rooms[i].game_id, username);
+        });
+    }
+})
+
 socket.on('startGame', (game) => {
+    document.getElementById("rooms--container").style.display = "none";
     document.getElementById("waiting--container").style.display = "none";
     document.getElementById("play--container").style.display = "flex";
 
@@ -44,36 +85,46 @@ function createCellClickListener(cellIndex) {
 for (let i = 0; i < cells.length; i++) {
     const clickHandler = createCellClickListener(i);
     clickHandlers.push(clickHandler);
-    cells[i].addEventListener("click", clickHandlers[i]);
 }
 
 socket.on('updateGame', (game) => {
-    console.log(JSON.stringify(game));
     document.getElementById("game--status").innerHTML = game.currentPlayer + " turn";
 
     for(let i = 0; i < 9; i++) {
         document.getElementsByClassName('game--container')[0].children[i].innerHTML = game.state[i];
     }
+
+    if(game.currentPlayer == 'O' && username == game.p1_id || game.currentPlayer == 'X' && username == game.p2_id) {
+        for (let i = 0; i < cells.length; i++) {
+            cells[i].removeEventListener("click", clickHandlers[i]);
+        }
+    } else {
+        for (let i = 0; i < cells.length; i++) {
+            cells[i].addEventListener("click", clickHandlers[i]);
+        }
+    }
 });
 
 socket.on('gameOver', (game) => { 
+    console.log(JSON.stringify(game));
     if (game.winner === null) {
         document.getElementById("game--status").innerHTML = "Draw!";
+    } else if (game.winner === undefined) {
+        document.getElementById("game--status").innerHTML = "Player disconnected";
     } else {
         document.getElementById("game--status").innerHTML = game.winner + " wins!";
     }
-
-    document.getElementsByClassName("new-game--button").innerHTML = "New game";
+    
     for (let i = 0; i < cells.length; i++) {
         cells[i].removeEventListener("click", clickHandlers[i]);
     }
 });
 
-document.getElementById('new-game--button').addEventListener("click", () => {
-    socket.emit('newGame');
-});
 
+document.getElementById("new-game--btn").addEventListener('click', () => {
+    socket.emit('newRoom', username);
 
-
-// //Client sends a message at the moment it got connected with the server
-// socket.emit('clientToServer', "Hello, server!");
+    document.getElementById("play--container").style.display = "none";
+    document.getElementById("enter-name").style.display = "none";
+    document.getElementById("waiting--container").style.display = "flex";
+})

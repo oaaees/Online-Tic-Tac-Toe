@@ -32,18 +32,26 @@ section {
     align-items: center;
 }
 
+#enter-name {
+    gap: 5vh;
+}
+
 .enter-name--container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 1vh;
 }  
 
 .enter-name--container input {
     height: 5vh;
+    width: 100%;
     border: 1px solid black;
     border-radius: 5px;
     font-family: "Poppins", sans-serif;
     font-size: 1rem;
+    padding: 1vh;
 }
 
 .enter-name--container button {
@@ -52,6 +60,13 @@ section {
     font-family: "Poppins", sans-serif;
     font-size: 1rem;
 }
+
+#rooms--container #rooms--list{
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+}
+
 
 .game--title {
     font-size: 2.5rem;

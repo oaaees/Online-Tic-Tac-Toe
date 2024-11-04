@@ -12,13 +12,22 @@
         <h1 class="game--title">Tic Tac Toe</h1>
         <div class="enter-name--container">
             <input type="text" name="name" placeholder="Enter your name" id="name">
-            <button id="submit-name">Enter</button>
+            <div>
+                <button id="create-room--btn" type="submit">Create a new room</button>
+                <button id="enter-room--btn" type="submit">Enter a room</button>
+            </div>
         </div>
     </section>
     <section id="waiting--container">
         <h1 class="game--title">Tic Tac Toe</h1>
         <img src="/img/loading.gif" alt="loading gif">
+        <p id="room-id"></p>
         <p>Waiting for another player</p>
+    </section>
+    <section id="rooms--container">
+        <h1 class="game--title">Tic Tac Toe</h1>
+        <p>Choose a room</p>
+        <div id="rooms--list"></div>
     </section>
     <section id="play--container">
         <h1 class="game--title">Tic Tac Toe</h1>
@@ -35,7 +44,7 @@
             <div data-cell-index="8" class="cell"></div>
         </div>
         <h3 id="game--status"></h3>
-        <button id="new-game--button">Resign</button>
+        <button id="new-game--btn">New Game</button>
     </section>
 
     <script src="client.js"></script>
