@@ -11,7 +11,7 @@ A real-time, multiplayer Tic-Tac-Toe game implemented with [Node.js](https://nod
 
 Install Node.js and run the command from this project folder:
 
-    node install
+    npm install
 
 After all the dependecies are installed, you can start the server with:
 
