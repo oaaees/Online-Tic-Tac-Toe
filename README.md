@@ -2,6 +2,9 @@
 
 A real-time, multiplayer Tic-Tac-Toe game implemented with [Node.js](https://nodejs.org/en) using [Express](https://expressjs.com/) and [Socket.io](https://socket.io/)
 
+<img src="screenshots/img1.png" width="300" alt="screenshot1">
+<img src="screenshots/img2.png" width="300" alt="screenshot1">
+
 ## How to run
 
 Install Node.js and run the command from this project folder:

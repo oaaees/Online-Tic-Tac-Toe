@@ -10,6 +10,7 @@ body {
     font-family: "Poppins", sans-serif;
     background-color: #70877f;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
@@ -113,4 +114,24 @@ button {
 button:hover {
     transition: 0.25s;
     background-color: #454272;
+}
+
+button:disabled {
+    background-color: grey;
+    color: darkslategrey;
+    cursor: not-allowed;
+}
+
+footer {
+    color: #fff;
+    position: absolute;
+    bottom: 0;
+    padding: 1vh;
+
+    text-align: center;
+}
+
+footer a {
+    color: #fff;
+
 }
