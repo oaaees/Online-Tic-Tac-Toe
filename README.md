@@ -2,8 +2,10 @@
 
 A real-time, multiplayer Tic-Tac-Toe game implemented with [Node.js](https://nodejs.org/en) using [Express](https://expressjs.com/) and [Socket.io](https://socket.io/)
 
-<img src="screenshots/img1.png" width="300" alt="screenshot1">
-<img src="screenshots/img2.png" width="300" alt="screenshot1">
+<p align="middle">
+    <img src="screenshots/img1.png" width="300" alt="screenshot1">
+    <img src="screenshots/img2.png" width="300" alt="screenshot1">
+</p>
 
 ## How to run
 
