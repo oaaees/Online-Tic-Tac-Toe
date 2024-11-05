@@ -38,11 +38,11 @@ Server runs on `http://localhost:3000` you can visit it in your web browser.
 
 Instala Node.js y ejecuta el siguiente comando:
 
-`node install`
+    node install
 
 Luego de instalar todas las dependencias, ejecuta el comando para crear el servidor:
 
-`node server.js`
+    node server.js
 
 El servidor se ejecutará en `http://localhost:3000` puedes visitar esta dirección en tu navegador web
 
